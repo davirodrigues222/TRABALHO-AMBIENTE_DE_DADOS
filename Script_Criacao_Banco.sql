@@ -15,10 +15,6 @@ USE clinica_fisioterapia;
 -- PARTE 2: CRIAÇÃO DAS TABELAS (sem FKs)
 -- ------------------------------------------------------------
 
--- CORREÇÃO: TELEFONE_PACIENTE passa a ser atributo direto da entidade PACIENTE,
--- da mesma forma que ocorre na entidade FISIOTERAPEUTA.
--- A tabela separada TELEFONE_PACIENTE foi removida conforme orientação do professor.
-
 CREATE TABLE PACIENTE (
     ID_PACIENTE           INT           PRIMARY KEY AUTO_INCREMENT,
     NOME_COMPLETO         VARCHAR(100)  NOT NULL,
