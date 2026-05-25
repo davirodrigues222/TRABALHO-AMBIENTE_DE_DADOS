@@ -15,21 +15,19 @@ USE clinica_fisioterapia;
 -- PARTE 2: CRIAÇÃO DAS TABELAS (sem FKs)
 -- ------------------------------------------------------------
 
-CREATE TABLE PACIENTE (
-    ID_PACIENTE        INT           PRIMARY KEY AUTO_INCREMENT,
-    NOME_COMPLETO      VARCHAR(100)  NOT NULL,
-    DATA_NASCIMENTO    DATE          NOT NULL,
-    SEXO               CHAR(1)       NOT NULL,
-    ENDERECO           VARCHAR(200),
-    DIAGNOSTICO_INICIAL TEXT,
-    INDICACAO_TRATAMENTO TEXT
-);
+-- CORREÇÃO: TELEFONE_PACIENTE passa a ser atributo direto da entidade PACIENTE,
+-- da mesma forma que ocorre na entidade FISIOTERAPEUTA.
+-- A tabela separada TELEFONE_PACIENTE foi removida conforme orientação do professor.
 
-CREATE TABLE TELEFONE_PACIENTE (
-    ID_TELEFONE   INT          PRIMARY KEY AUTO_INCREMENT,
-    ID_PACIENTE   INT          NOT NULL,
-    NUMERO        VARCHAR(20)  NOT NULL,
-    EH_WHATSAPP   TINYINT(1)   DEFAULT 0
+CREATE TABLE PACIENTE (
+    ID_PACIENTE           INT           PRIMARY KEY AUTO_INCREMENT,
+    NOME_COMPLETO         VARCHAR(100)  NOT NULL,
+    DATA_NASCIMENTO       DATE          NOT NULL,
+    SEXO                  CHAR(1)       NOT NULL,
+    ENDERECO              VARCHAR(200),
+    TELEFONE_PACIENTE     VARCHAR(20),
+    DIAGNOSTICO_INICIAL   TEXT,
+    INDICACAO_TRATAMENTO  TEXT
 );
 
 CREATE TABLE FISIOTERAPEUTA (
@@ -50,15 +48,16 @@ CREATE TABLE PLANO_SAUDE (
 CREATE TABLE PROCEDIMENTO (
     ID_PROCEDIMENTO    INT            PRIMARY KEY AUTO_INCREMENT,
     NOME_PROCEDIMENTO  VARCHAR(100)   NOT NULL,
+    DESCRICAO          TEXT,
     VALOR_PADRAO       DECIMAL(10,2)  NOT NULL
 );
 
 CREATE TABLE SESSAO (
     ID_SESSAO            INT            PRIMARY KEY AUTO_INCREMENT,
     DATA_SESSAO          DATETIME       NOT NULL,
-    VALOR_REAL_PAGO      DECIMAL(10,2),
+    VALOR_PROCEDIMENTO   DECIMAL(10,2),
     MODALIDADE_PAGAMENTO VARCHAR(30),
-    STATUS_PAGAMENTO     TINYINT(1)     DEFAULT 0,
+    PAGO                 TINYINT(1)     DEFAULT 0,
     ID_PACIENTE          INT            NOT NULL,
     ID_FISIOTERAPEUTA    INT            NOT NULL,
     ID_PROCEDIMENTO      INT            NOT NULL,
@@ -70,7 +69,7 @@ CREATE TABLE AVALIACAO (
     ID_PACIENTE          INT     NOT NULL,
     ID_FISIOTERAPEUTA    INT     NOT NULL,
     DATA_AVALIACAO       DATE    NOT NULL,
-    DESCRICAO_AVALIACAO  TEXT,
+    AVALIACAO            TEXT,
     PROGRESSO_PERCENTUAL INT,
     RECOMENDACAO         TEXT
 );
@@ -81,16 +80,12 @@ CREATE TABLE EXAME (
     TIPO_EXAME      VARCHAR(50),
     DATA_EXAME      DATE         NOT NULL,
     RESULTADO_LAUDO TEXT,
-    CAMINHO_IMAGEM  VARCHAR(255)
+    IMAGEM_EXAME    VARCHAR(255)
 );
 
 -- ------------------------------------------------------------
 -- PARTE 3: CRIAÇÃO DAS FOREIGN KEYS (separado conforme pedido)
 -- ------------------------------------------------------------
-
-ALTER TABLE TELEFONE_PACIENTE
-    ADD CONSTRAINT FK_PAC_FONE
-    FOREIGN KEY (ID_PACIENTE) REFERENCES PACIENTE(ID_PACIENTE);
 
 ALTER TABLE SESSAO
     ADD CONSTRAINT FK_PAC_SESSAO
@@ -119,12 +114,16 @@ ALTER TABLE AVALIACAO
 ALTER TABLE EXAME
     ADD CONSTRAINT FK_PAC_EXAME
     FOREIGN KEY (ID_PACIENTE) REFERENCES PACIENTE(ID_PACIENTE);
-    
-    show tables;
-    
-    desc SESSAO;
-    
-    SELECT TABLE_NAME, CONSTRAINT_NAME, REFERENCED_TABLE_NAME
+
+-- ------------------------------------------------------------
+-- PARTE 4: VERIFICAÇÃO (consultas para conferência)
+-- ------------------------------------------------------------
+
+SHOW TABLES;
+
+DESC SESSAO;
+
+SELECT TABLE_NAME, CONSTRAINT_NAME, REFERENCED_TABLE_NAME
 FROM information_schema.KEY_COLUMN_USAGE
 WHERE TABLE_SCHEMA = 'clinica_fisioterapia'
   AND REFERENCED_TABLE_NAME IS NOT NULL;
