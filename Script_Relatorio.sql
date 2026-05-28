@@ -3,7 +3,7 @@ USE clinica_fisioterapia;
 -- =========================
 -- RELATÓRIO DE SESSÕES
 -- =========================
-SELECT 
+SELECT
     s.ID_SESSAO,
     s.DATA_SESSAO,
     p.NOME_COMPLETO AS PACIENTE,
@@ -28,7 +28,7 @@ SELECT * FROM PACIENTE;
 -- =========================
 -- AVALIAÇÕES
 -- =========================
-SELECT 
+SELECT
     a.ID_AVALIACAO,
     p.NOME_COMPLETO,
     f.NOME,
@@ -43,7 +43,7 @@ JOIN FISIOTERAPEUTA f ON a.ID_FISIOTERAPEUTA = f.ID_FISIOTERAPEUTA;
 -- =========================
 -- EXAMES
 -- =========================
-SELECT 
+SELECT
     e.ID_EXAME,
     p.NOME_COMPLETO,
     e.TIPO_EXAME,
@@ -55,7 +55,7 @@ JOIN PACIENTE p ON e.ID_PACIENTE = p.ID_PACIENTE;
 -- =========================
 -- FINANCEIRO
 -- =========================
-SELECT 
+SELECT
     COUNT(*) AS TOTAL_SESSOES,
     SUM(VALOR_PROCEDIMENTO) AS RECEITA_TOTAL,
     SUM(CASE WHEN PAGO = 1 THEN VALOR_PROCEDIMENTO ELSE 0 END) AS RECEITA_RECEBIDA,
@@ -65,7 +65,7 @@ FROM SESSAO;
 -- =========================
 -- PRODUTIVIDADE
 -- =========================
-SELECT 
+SELECT
     f.NOME,
     f.ESPECIALIDADE,
     COUNT(s.ID_SESSAO) AS TOTAL_SESSOES,
@@ -77,7 +77,7 @@ GROUP BY f.ID_FISIOTERAPEUTA, f.NOME, f.ESPECIALIDADE;
 -- =========================
 -- PROCEDIMENTOS MAIS USADOS
 -- =========================
-SELECT 
+SELECT
     pr.NOME_PROCEDIMENTO,
     COUNT(s.ID_SESSAO) AS QTD,
     SUM(s.VALOR_PROCEDIMENTO) AS FATURAMENTO
@@ -88,7 +88,7 @@ GROUP BY pr.ID_PROCEDIMENTO, pr.NOME_PROCEDIMENTO;
 -- =========================
 -- PACIENTES COM MAIS SESSÕES
 -- =========================
-SELECT 
+SELECT
     p.NOME_COMPLETO,
     COUNT(s.ID_SESSAO) AS TOTAL,
     SUM(s.VALOR_PROCEDIMENTO) AS GASTO
@@ -99,7 +99,7 @@ GROUP BY p.ID_PACIENTE, p.NOME_COMPLETO;
 -- =========================
 -- FORMAS DE PAGAMENTO
 -- =========================
-SELECT 
+SELECT
     MODALIDADE_PAGAMENTO,
     COUNT(*) AS QUANTIDADE,
     SUM(VALOR_PROCEDIMENTO) AS TOTAL
