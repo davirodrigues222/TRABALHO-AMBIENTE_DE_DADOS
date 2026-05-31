@@ -1,3 +1,11 @@
+# INTEGRANTES DA EQUIPE
+
+1 - Gabriel Vieira - Diagrama de Entidade-Relacionamento
+2 - David Frota - Modelo Relacional/ Script de Carga de Dados
+3 - Davi Rodrigues - Organização do projeto/ Script Criação do Banco De Dados
+4 - Nicolas Castro - Criação do Script de Relatorios
+
+
 # Banco de Dados — Clínica de Fisioterapia
 
 Projeto de modelagem e implementação de banco de dados relacional para uma clínica de fisioterapia, desenvolvido na disciplina de Ambiente de Dados.
